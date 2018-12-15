@@ -41,7 +41,7 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<ViewHolder>{
         final MovieItem movieItem = movies.get(position);
 
         ImageView imageView = holder.imageView;
-
+        sendImageRequest(movieItem.image, imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,4 +71,8 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<ViewHolder>{
         return movies.size();
     }
 
+    public void sendImageRequest(String str, ImageView imageView) {
+        ImageLoadTask task = new ImageLoadTask(str, imageView);
+        task.execute();
+    }
 }
