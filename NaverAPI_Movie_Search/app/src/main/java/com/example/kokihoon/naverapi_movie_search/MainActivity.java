@@ -1,5 +1,7 @@
 package com.example.kokihoon.naverapi_movie_search;
 
+import android.app.ProgressDialog;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     String search;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
+    private Handler mHandler;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,37 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "검색어를 입력하세요.", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    sendRequest();
+                    mHandler = new Handler();
+
+                    runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            mProgressDialog = ProgressDialog.show(MainActivity.this,"",
+                                    "잠시만 기다려 주세요.",true);
+                            mHandler.postDelayed( new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    try
+                                    {
+                                        if (mProgressDialog!=null&&mProgressDialog.isShowing()){
+                                            mProgressDialog.dismiss();
+                                            sendRequest();
+                                        }
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, 500);
+                        }
+                    } );
+
+
                 }
             }
         });
