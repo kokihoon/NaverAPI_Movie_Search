@@ -2,10 +2,22 @@ package com.example.kokihoon.naverapi_movie_search;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     EditText editText;
@@ -28,10 +40,55 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "검색어를 입력하세요.", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), search+"", Toast.LENGTH_LONG).show();
-
+                    sendRequest();
                 }
             }
         });
+
+
+        if(AppHelper.requestQueue == null) {
+            AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        }
+    }
+
+    public void sendRequest() {
+        try {
+            String text = URLEncoder.encode(search, "UTF-8");
+            String apiURL = "https://"+ AppHelper.host+ text+"&display=100"; // json 결과
+            StringRequest request = new StringRequest(
+                    Request.Method.GET,
+                    apiURL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            System.out.println("응답  -> " + response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            System.out.println("에러 -> " + error.getMessage());
+                        }
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+
+                    Map<String, String> params = new HashMap<>();
+                    params.put("X-Naver-Client-Id", NaverAPI_key.clientId);
+                    params.put("X-Naver-Client-Secret", NaverAPI_key.clientSecret);
+                    Log.d("getHeader =>", "" + params);
+
+                    return params;
+                }
+            };
+
+            request.setShouldCache(false);
+            AppHelper.requestQueue.add(request);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
