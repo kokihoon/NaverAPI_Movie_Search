@@ -14,6 +14,7 @@ NaverAPI_key 클래스를 생성합니다.
 ``` 
     public final static String clientId = '애플리케이션 클라이언트 아이디값';
     public final static String clientSecret = '애플리케이션 클라이언트 시크릿값'; 
+
 ```
 
 4. 빌드를 하면 됩니다.
