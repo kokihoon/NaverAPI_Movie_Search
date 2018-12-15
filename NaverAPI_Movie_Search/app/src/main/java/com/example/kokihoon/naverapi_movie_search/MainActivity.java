@@ -1,6 +1,7 @@
 package com.example.kokihoon.naverapi_movie_search;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;
     private Handler mHandler;
     private ProgressDialog mProgressDialog;
-
+    InputMethodManager imm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         Button button = (Button)findViewById(R.id.button);
-
+        imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                     {
                                         if (mProgressDialog!=null&&mProgressDialog.isShowing()){
                                             mProgressDialog.dismiss();
+                                            hideKeyBoard(editText);
                                             sendRequest();
                                         }
                                     }
@@ -96,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
             AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         }
+    }
+    public void hideKeyBoard(EditText editText) {
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     public void sendRequest() {
