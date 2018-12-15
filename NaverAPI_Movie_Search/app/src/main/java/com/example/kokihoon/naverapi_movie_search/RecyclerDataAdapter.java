@@ -42,6 +42,13 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<ViewHolder>{
 
         ImageView imageView = holder.imageView;
 
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(movieItem.link)));
+            }
+        });
         RatingBar ratingBar = holder.ratingBar;
         ratingBar.setIsIndicator(true);
         ratingBar.setRating(Float.parseFloat(movieItem.userRating)/2);
