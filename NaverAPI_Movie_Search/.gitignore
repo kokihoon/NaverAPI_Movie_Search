@@ -9,3 +9,5 @@
 /build
 /captures
 .externalNativeBuild
+
+./NaverAPI_Movie_Search/app/src/main/java/com/example/kokihoon/naverapi_movie_search/NaverAPI_key.java
