@@ -1,5 +1,6 @@
 package com.example.kokihoon.naverapi_movie_search;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -12,7 +13,6 @@ public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
 
     private String urlStr;
     private ImageView imageView;
-
     private static HashMap<String, Bitmap> bitmapHash = new HashMap<String, Bitmap>();
 
     public ImageLoadTask(String urlSTr, ImageView imageView) {
@@ -21,6 +21,7 @@ public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
     }
     @Override
     protected void onPreExecute() {
+
         super.onPreExecute();
     }
 
